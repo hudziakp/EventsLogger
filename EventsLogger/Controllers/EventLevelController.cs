@@ -24,8 +24,11 @@ namespace EventsLogger.Controllers
             var element = _io.ReadChar();
             if (Enum.TryParse(element, out EventLevel logLevel))
             {
-                _logLevel = logLevel;
-                return true;
+                if ((int) logLevel < Enum.GetValues(typeof(EventLevel)).Length)
+                {
+                    _logLevel = logLevel;
+                    return true;
+                }
             }
             _io.Send($"\"{element}\" is not valid value.");
             return false;
