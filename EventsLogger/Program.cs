@@ -8,7 +8,7 @@ namespace EventsLogger
     {
         static void Main(string[] args)
         {
-            var events = new List<Event>();
+            var events = GenerateSampleData();
             Console.WriteLine("Event Logger App");
             Console.WriteLine("Select Logging Level:");
             var i = 0;
@@ -18,13 +18,52 @@ namespace EventsLogger
             }
 
             var element = Console.ReadKey(true).KeyChar.ToString();
-            var logLevel = EventLevel.Trace;
-            if (!Enum.TryParse<EventLevel>(element, out logLevel))
+            if (!Enum.TryParse(element, out EventLevel logLevel) || (int)logLevel >= Enum.GetValues(typeof(EventLevel)).Length)
             {
                 Console.WriteLine($"\"{element}\" is not valid value.");
                 return;
             }
 
+            foreach (var e in events)
+            {
+                if (e.Level >= logLevel)
+                {
+                    var oldColor = Console.ForegroundColor;
+                    if (!Console.IsOutputRedirected)
+                        switch (e.Type)
+                        {
+                            case EventType.Error:
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                break;
+                            case EventType.Step:
+                                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                                break;
+                            case EventType.Information:
+                                Console.ForegroundColor = ConsoleColor.DarkBlue;
+                                break;
+                        }
+
+                    Console.WriteLine("===========================================================");
+                    Console.WriteLine($"[{e.EventDate:HH:mm:ss}] \n Type: {e.Type} \n Level: {e.Level} \n   Message: {e.Message}\n   Details: {e.Details} ");
+                    var innerEvent = e.InnerEvent;
+                    var innerLevel = 0;
+                    while (innerEvent != null)
+                    {
+                        Console.WriteLine("---------------------------------------------------------");
+                        Console.WriteLine($"INNER EVENT Level {innerLevel++} \n  Type: {innerEvent.Type}\n  Level: {innerEvent.Level} \n   Message: {innerEvent.Message}\n   Details: {innerEvent.Details} ");
+                        innerEvent = innerEvent.InnerEvent;
+                    }
+
+                    Console.ForegroundColor = oldColor;
+                }
+            }
+            if (!Console.IsOutputRedirected)
+                Console.ReadKey(true);
+        }
+
+        private static List<Event> GenerateSampleData()
+        {
+            var events = new List<Event>();
             var evnt = new Event
             {
                 Level = EventLevel.Trace,
@@ -63,44 +102,10 @@ namespace EventsLogger
                 Level = EventLevel.Trace,
                 Type = EventType.Information,
                 Message = "Connection established",
-                Details = "Connected to datasorce XXX successfully"
+                Details = "Connected to data source XXX successfully"
             });
 
-            foreach (var e in events)
-            {
-                if (e.Level >= logLevel)
-                {
-                    var oldColor = Console.ForegroundColor;
-                    if (!Console.IsOutputRedirected)
-                        switch (e.Type)
-                        {
-                            case EventType.Error:
-                                Console.ForegroundColor = ConsoleColor.Red;
-                                break;
-                            case EventType.Step:
-                                Console.ForegroundColor = ConsoleColor.DarkGreen;
-                                break;
-                            case EventType.Information:
-                                Console.ForegroundColor = ConsoleColor.DarkBlue;
-                                break;
-                        }
-
-                    Console.WriteLine("===========================================================");
-                    Console.WriteLine($"[{e.EventDate:HH:mm:ss}] \n Type: {e.Type} \n Level: {e.Level} \n   Message: {e.Message}\n   Details: {e.Details} ");
-                    var innerEvent = e.InnerEvent;
-                    var innerLevel = 0;
-                    while (innerEvent != null)
-                    {
-                        Console.WriteLine("---------------------------------------------------------");
-                        Console.WriteLine($"INNER EVENT Level {innerLevel++} \n  Type: {innerEvent.Type}\n  Level: {innerEvent.Level} \n   Message: {innerEvent.Message}\n   Details: {innerEvent.Details} ");
-                        innerEvent = innerEvent.InnerEvent;
-                    }
-
-                    Console.ForegroundColor = oldColor;
-                }
-            }
-            if (!Console.IsOutputRedirected)
-                Console.ReadKey(true);
+            return events;
         }
     }
 }
