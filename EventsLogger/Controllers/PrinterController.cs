@@ -5,12 +5,12 @@ namespace EventsLogger.Controllers
 {
     public class PrinterController : IDisposable
     {
-        int oldColor;
-        private InputOutputController _output;
+        private readonly int _oldColor;
+        private readonly InputOutputController _output;
         public PrinterController(EventType eventType, InputOutputController output)
         {
             _output = output;
-            oldColor = output.GetColor();
+            _oldColor = output.GetColor();
             switch (eventType)
             {
                 case EventType.Error:
@@ -32,7 +32,7 @@ namespace EventsLogger.Controllers
 
         public void Dispose()
         {
-            _output.SetColor(oldColor);
+            _output.SetColor(_oldColor);
         }
     }
 }

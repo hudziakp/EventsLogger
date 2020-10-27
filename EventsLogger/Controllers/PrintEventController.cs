@@ -5,15 +5,15 @@ namespace EventsLogger.Controllers
 {
     public class PrintEventController
     {
-        EventLevelController _loggingLevel;
-        InputOutputController _io;
+        private readonly EventLevelController _loggingLevel;
+        private readonly InputOutputController _io;
         public PrintEventController(EventLevelController eventLevelController, InputOutputController io)
         {
             _loggingLevel = eventLevelController;
             _io = io;
         }
 
-        public void Print(List<Event> events)
+        public void Print(IEnumerable<Event> events)
         {
             foreach (var e in events)
             {
@@ -21,7 +21,7 @@ namespace EventsLogger.Controllers
             }
         }
 
-        public void Print(Event evnt)
+        private void Print(Event evnt)
         {
             if (_loggingLevel.ShouldEventBeDisplayed(evnt.Level))
             {

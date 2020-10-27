@@ -5,7 +5,7 @@ namespace EventsLogger.Controllers
 {
     public class EventLevelController
     {
-        private InputOutputController _io;
+        private readonly InputOutputController _io;
         private EventLevel _logLevel;
         public EventLevelController(InputOutputController io)
         {

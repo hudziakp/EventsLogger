@@ -61,7 +61,7 @@ namespace EventsLogger
                 Level = EventLevel.Trace,
                 Type = EventType.Information,
                 Message = "Connection established",
-                Details = "Connected to datasorce XXX successfully"
+                Details = "Connected to data source XXX successfully"
             });
             return events;
         }
