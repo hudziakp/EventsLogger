@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using EventsLogger.Models.Data;
 
 namespace EventsLogger.Controllers
@@ -15,19 +16,28 @@ namespace EventsLogger.Controllers
 
         public void Print(IEnumerable<Event> events)
         {
-            foreach (var e in events)
-            {
-                Print(e);
-            }
+            var eventsToBeDisplayed = from e in events 
+                where _loggingLevel.ShouldEventBeDisplayed(e.Level) 
+                select Prepare(e);
+
+            PrintEvents(eventsToBeDisplayed);
         }
 
-        private void Print(Event evnt)
+        private void PrintEvents(IEnumerable<PrintableEvent> events)
         {
-            if (_loggingLevel.ShouldEventBeDisplayed(evnt.Level))
+            var oldColor = _io.GetColor();
+            foreach (var e in events)
             {
-                using var printer = new PrinterController(evnt.Type, _io);
-                printer.PrintLine(EventSerializer.Serialize(evnt));
+                _io.SetColor(e.Color);
+                _io.Send(e.Message);
             }
+            _io.SetColor(oldColor);
+        }
+
+
+        private static PrintableEvent Prepare(Event evnt)
+        {
+            return EventsConverter.Create(evnt);
         }
     }
 }

@@ -20,7 +20,8 @@ namespace EventsLogger
             io.ReadChar();
         }
         #region Event Genetation
-        public static List<Event> GenerateSampleData()
+
+        private static IEnumerable<Event> GenerateSampleData()
         {
             var events = new List<Event>();
             var evnt = new Event
