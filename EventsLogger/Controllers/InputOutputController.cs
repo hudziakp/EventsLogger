@@ -1,7 +1,7 @@
 ﻿using System;
 namespace EventsLogger.Controllers
 {
-    public class InputOutputController
+    public class InputOutputController : ILogger
     {
         public void Send(string text)
         {
