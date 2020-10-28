@@ -1,7 +1,8 @@
 ﻿using System;
+using EventsLogger.Controllers;
 using EventsLogger.Models.Data;
 
-namespace EventsLogger.Controllers
+namespace EventsLogger.Helpers
 {
     public class EventsConverter
     {

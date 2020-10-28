@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using EventsLogger.Controllers;
+using EventsLogger.Factory;
 using EventsLogger.Models.Data;
 
 namespace EventsLogger
@@ -8,10 +10,14 @@ namespace EventsLogger
     {
         static void Main(string[] args)
         {
+            var toFile = (args != null) && 
+                         (args.Length > 0) && 
+                         (args[0].Equals("File",StringComparison.InvariantCultureIgnoreCase));
+
             var events = new List<Event>(GenerateSampleData());
             var io = new InputOutputController();
             var loggingLevel = new EventLevelController(io);
-            var printer = new PrintEventController(loggingLevel, io);
+            var printer = PrintEventControllerFactory.Generate(toFile, loggingLevel, io);
 
             if (!loggingLevel.GetEventLevel())
                 return;
@@ -19,8 +25,8 @@ namespace EventsLogger
             printer.Print(events);
             io.ReadChar();
         }
-        #region Event Genetation
 
+        #region Event Genetation
         private static IEnumerable<Event> GenerateSampleData()
         {
             var events = new List<Event>();
