@@ -7,10 +7,10 @@ namespace EventsLogger.Controllers.PrintEvent
 {
     public abstract class PrintEventController : IPrintEventController
     {
-        private readonly EventLevelController _loggingLevel;
-        protected readonly InputOutputController _io;
+        private readonly IEventLevelController _loggingLevel;
+        protected readonly IInputOutputController _io;
 
-        public PrintEventController(EventLevelController eventLevelController, InputOutputController io)
+        public PrintEventController(IEventLevelController eventLevelController, IInputOutputController io)
         {
             _loggingLevel = eventLevelController;
             _io = io;
