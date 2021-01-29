@@ -6,7 +6,7 @@ using EventsLogger.Models.Data;
 
 namespace EventsLogger.Controllers.EmailHandler
 {
-    public class EmailController : PrintEventController
+    public class EmailController : IEmailController
     {
         public string Server { get; set; }
         public string Login { get; set; }
@@ -15,8 +15,13 @@ namespace EventsLogger.Controllers.EmailHandler
         private bool _shouldSendEmail = false;
         private string _emailAddress;
 
-        public EmailController(IEventLevelController eventLevelController,IInputOutputController inputOutput) : base(eventLevelController, inputOutput)
+        private readonly IInputOutputController _io;
+        private readonly IEventLevelController _loggingLevel;
+
+        public EmailController(IEventLevelController eventLevelController, IInputOutputController inputOutput)
         {
+            _io = inputOutput;
+            _loggingLevel = eventLevelController;
         }
 
         public void ShouldSendEmail()
@@ -33,15 +38,11 @@ namespace EventsLogger.Controllers.EmailHandler
         {
             if (_shouldSendEmail)
             {
-                 _io.Send("Provide Email Address:");
+                _io.Send("Provide Email Address:");
                 _emailAddress = _io.ReadLine();
-                Print(events);
+                var eventsToSend =_loggingLevel.GetEventsToBePrinted(events);
+                _io.Send($"{eventsToSend.Count()} events has been send to {_emailAddress}");
             }
-        }
-
-        protected override void PrintEvents(IEnumerable<PrintableEvent> events)
-        {
-            _io.Send($"{events.Count()} events has been send to {_emailAddress}");
         }
     }
 }

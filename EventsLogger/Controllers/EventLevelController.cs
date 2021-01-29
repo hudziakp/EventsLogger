@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using EventsLogger.Helpers;
 using EventsLogger.Models.Data;
 
 namespace EventsLogger.Controllers
@@ -37,6 +40,18 @@ namespace EventsLogger.Controllers
         public bool ShouldEventBeDisplayed(EventLevel eventLevel)
         {
             return eventLevel >= _logLevel;
+        }
+
+        public IEnumerable<PrintableEvent> GetEventsToBePrinted(IEnumerable<Event> events)
+        {
+            return from e in events
+                where ShouldEventBeDisplayed(e.Level)
+                select Prepare(e);
+        }
+
+        private static PrintableEvent Prepare(Event evnt)
+        {
+            return EventsConverter.Create(evnt);
         }
     }
 }

@@ -15,6 +15,9 @@ namespace EventsLoggerTests.Controllers.EmailHandler
         {
             var loggingLevel = new Mock<IEventLevelController>();
             loggingLevel.Setup(l => l.ShouldEventBeDisplayed(It.IsAny<EventLevel>())).Returns(true);
+            loggingLevel.Setup(l => l.GetEventsToBePrinted(It.IsAny<IEnumerable<Event>>()))
+                .Returns(new List<PrintableEvent> {new PrintableEvent()});
+
             var io = new Mock<IInputOutputController>();
             io.Setup(i => i.ReadChar()).Returns("Y");
             io.Setup(i => i.ReadLine()).Returns("Johnny@email.com");
@@ -22,10 +25,18 @@ namespace EventsLoggerTests.Controllers.EmailHandler
 
             var events = new List<Event>
             {
-                new Event{Details = string.Empty, Level = EventLevel.Info, EventDate = DateTime.Now, Message = string.Empty, Type = EventType.Information}
+                new Event
+                {
+                    Details = string.Empty, 
+                    Level = EventLevel.Info, 
+                    EventDate = DateTime.Now,
+                    Message = string.Empty, 
+                    Type = EventType.Information
+                }
             };
 
             var mailController = new EmailController(loggingLevel.Object, io.Object);
+
             mailController.ShouldSendEmail();
             io.Verify(i => i.Send("Should send email? (Y/N)"), Times.Once);
 

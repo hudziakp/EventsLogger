@@ -1,4 +1,5 @@
-﻿using EventsLogger.Models.Data;
+﻿using System.Collections.Generic;
+using EventsLogger.Models.Data;
 
 namespace EventsLogger.Controllers
 {
@@ -6,5 +7,6 @@ namespace EventsLogger.Controllers
     {
         bool GetEventLevel();
         bool ShouldEventBeDisplayed(EventLevel eventLevel);
+        IEnumerable<PrintableEvent> GetEventsToBePrinted(IEnumerable<Event> events);
     }
 }
