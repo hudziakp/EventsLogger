@@ -2,7 +2,7 @@
   "profiles": {
     "EventsLogger": {
       "commandName": "Project",
-      "commandLineArgs": "File"
+      "commandLineArgs": "Screen"
     }
   }
 }
