@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using EventsLogger.Controllers;
+using EventsLogger.Controllers.EmailHander;
 using EventsLogger.Factory;
 using EventsLogger.Models.Data;
 
@@ -18,12 +19,25 @@ namespace EventsLogger
             var io = new InputOutputController();
             var loggingLevel = new EventLevelController(io);
             var printer = PrintEventControllerFactory.Generate(toFile, loggingLevel, io);
+            var mailController = new EmailController(loggingLevel, io)
+            {
+                Login = "John@email.com",
+                Password = "Secret",
+                Server = "smtp.email.com"
+            };
 
             if (!loggingLevel.GetEventLevel())
                 return;
 
             printer.Print(events);
+
+            //send to Email
+            mailController.ShouldSendEmail();
+            mailController.SendEmail(events);
+
+            //Closing statements
             io.ReadChar();
+            io.Send("Program Ended");
         }
 
         #region Event Genetation

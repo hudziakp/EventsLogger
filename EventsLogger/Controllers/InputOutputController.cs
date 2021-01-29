@@ -1,7 +1,7 @@
 ﻿using System;
 namespace EventsLogger.Controllers
 {
-    public class InputOutputController
+    public class InputOutputController : IInputOutputController
     {
         public void Send(string text)
         {
@@ -22,6 +22,11 @@ namespace EventsLogger.Controllers
         public string ReadChar()
         {
             return Console.ReadKey(true).KeyChar.ToString();
+        }
+
+        public string ReadLine()
+        {
+            return Console.ReadLine();
         }
     }
 }

@@ -3,7 +3,7 @@ using EventsLogger.Models.Data;
 
 namespace EventsLogger.Controllers
 {
-    public class EventLevelController
+    public class EventLevelController : IEventLevelController
     {
         private readonly InputOutputController _io;
         private EventLevel _logLevel;
@@ -24,7 +24,7 @@ namespace EventsLogger.Controllers
             var element = _io.ReadChar();
             if (Enum.TryParse(element, out EventLevel logLevel))
             {
-                if ((int) logLevel < Enum.GetValues(typeof(EventLevel)).Length)
+                if ((int)logLevel < Enum.GetValues(typeof(EventLevel)).Length)
                 {
                     _logLevel = logLevel;
                     return true;
