@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using EventsLogger.Controllers;
-using EventsLogger.Controllers.EmailHander;
+using EventsLogger.Controllers.EmailHandler;
 using EventsLogger.Models.Data;
 using Moq;
 using Xunit;
 
-
-namespace EventsLoggerTests
+namespace EventsLoggerTests.Controllers.EmailHandler
 {
     public class EmailHandlerTest
     {
@@ -19,7 +18,7 @@ namespace EventsLoggerTests
             var io = new Mock<IInputOutputController>();
             io.Setup(i => i.ReadChar()).Returns("Y");
             io.Setup(i => i.ReadLine()).Returns("Johnny@email.com");
-            io.Setup(i => i.Send(It.IsAny<String>()));
+            io.Setup(i => i.Send(It.IsAny<string>()));
 
             var events = new List<Event>
             {
@@ -34,6 +33,5 @@ namespace EventsLoggerTests
             io.Verify(i => i.Send("Provide Email Address:"), Times.Once);
             io.Verify(i => i.Send("1 events has been send to Johnny@email.com"), Times.Once);
         }
-
     }
 }

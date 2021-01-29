@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using EventsLogger.Controllers;
-using EventsLogger.Controllers.EmailHander;
+using EventsLogger.Controllers.EmailHandler;
 using EventsLogger.Factory;
 using EventsLogger.Models.Data;
 

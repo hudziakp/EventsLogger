@@ -4,7 +4,7 @@ using System.Linq;
 using EventsLogger.Controllers.PrintEvent;
 using EventsLogger.Models.Data;
 
-namespace EventsLogger.Controllers.EmailHander
+namespace EventsLogger.Controllers.EmailHandler
 {
     public class EmailController : PrintEventController
     {
