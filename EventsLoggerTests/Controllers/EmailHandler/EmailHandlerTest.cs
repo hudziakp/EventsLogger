@@ -35,10 +35,12 @@ namespace EventsLoggerTests.Controllers.EmailHandler
                 }
             };
 
-            var mailController = new EmailController(loggingLevel.Object, io.Object);
+            var mailController = new EmailController(loggingLevel.Object, io.Object)
+            {
+                Recipients = new List<string> {"Johnny@email.com"}
+            };
 
             mailController.SendEmail(events);
-            io.Verify(i => i.Send("Provide Email Address:"), Times.Once);
             io.Verify(i => i.Send("1 events has been send to Johnny@email.com"), Times.Once);
         }
     }
