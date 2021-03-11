@@ -25,7 +25,7 @@ namespace EventsLoggerTests.Controllers.EmailHandler
 
             var events = new List<Event>
             {
-                new Event
+                new()
                 {
                     Details = string.Empty, 
                     Level = EventLevel.Info, 
