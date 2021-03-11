@@ -9,6 +9,7 @@ namespace EventsLogger.Controllers.EmailHandler
         string Login { get; set; }
         string Password { get; set; }
         string Server { get; set; }
+        List<string> Recipients { get; set; }
 
         void SendEmail(IEnumerable<Event> events);
     }

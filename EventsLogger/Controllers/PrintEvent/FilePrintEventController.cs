@@ -6,9 +6,9 @@ namespace EventsLogger.Controllers.PrintEvent
 {
     public class FilePrintEventController : PrintEventController
     {
-        public string FilePath { get; set; } = @"C:\tmp\EventLoggerText.log";
+        public string FilePath { get; set; } = @"C:\temp\EventLoggerText.log";
 
-        public FilePrintEventController(EventLevelController eventLevelController, InputOutputController io) : base(eventLevelController, io)
+        public FilePrintEventController(IEventLevelController eventLevelController, IInputOutputController io) : base(eventLevelController, io)
         {
         }
 

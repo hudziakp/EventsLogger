@@ -5,7 +5,7 @@ namespace EventsLogger.Controllers.PrintEvent
 {
     public class ConsolePrintEventController : PrintEventController
     {
-        public ConsolePrintEventController(EventLevelController eventLevelController, InputOutputController io): base(eventLevelController, io) {
+        public ConsolePrintEventController(IEventLevelController eventLevelController, IInputOutputController io): base(eventLevelController, io) {
         }
 
         protected override void PrintEvents(IEnumerable<PrintableEvent> events)

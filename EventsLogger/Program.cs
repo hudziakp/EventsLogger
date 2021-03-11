@@ -1,47 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Autofac;
 using EventsLogger.Controllers;
-using EventsLogger.Controllers.EmailHandler;
-using EventsLogger.Factory;
+using EventsLogger.Dependency;
 using EventsLogger.Models.Data;
 
 namespace EventsLogger
 {
     class Program
     {
+        private static IContainer Container { get; set; }
+
+
         static void Main(string[] args)
         {
-            var toFile = (args != null) && 
-                         (args.Length > 0) && 
-                         (args[0].Equals("File",StringComparison.InvariantCultureIgnoreCase));
+            var events = GenerateSampleData();
+            var configurationController = new ConfigurationController(args);
+            Container = DependenciesBuilder.PrepareContainer(configurationController);
+            Execute(events);
+        }
 
-            var events = new List<Event>(GenerateSampleData());
-            var io = new InputOutputController();
-            var loggingLevel = new EventLevelController(io);
-            var printer = PrintEventControllerFactory.Generate(toFile, loggingLevel, io);
-            var mailController = new EmailController(loggingLevel, io)
-            {
-                Login = "John@email.com",
-                Password = "Secret",
-                Server = "smtp.email.com"
-            };
-
-            if (!loggingLevel.GetEventLevel())
-                return;
-
-            printer.Print(events);
-
-            //send to Email
-            mailController.ShouldSendEmail();
-            mailController.SendEmail(events);
-
-            //Closing statements
-            io.ReadChar();
-            io.Send("Program Ended");
+        private static void Execute(List<Event> events)
+        {
+            using var scope = Container.BeginLifetimeScope();
+            var eventHandler = scope.Resolve<IEventHandler>();
+            eventHandler.HandleEvents(events);
         }
 
         #region Event Genetation
-        private static IEnumerable<Event> GenerateSampleData()
+        private static List<Event> GenerateSampleData()
         {
             var events = new List<Event>();
             var evnt = new Event

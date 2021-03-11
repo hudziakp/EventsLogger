@@ -8,9 +8,9 @@ namespace EventsLogger.Controllers
 {
     public class EventLevelController : IEventLevelController
     {
-        private readonly InputOutputController _io;
+        private readonly IInputOutputController _io;
         private EventLevel _logLevel;
-        public EventLevelController(InputOutputController io)
+        public EventLevelController(IInputOutputController io)
         {
             _io = io;
         }
