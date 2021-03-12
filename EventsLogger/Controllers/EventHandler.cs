@@ -13,7 +13,12 @@ namespace EventsLogger.Controllers
         private readonly IEventLevelController _eventLevelController;
         private readonly IWorkflowController _workflowController;
         private readonly IPrintEventController _printEventController;
-        public EventHandler(IConfigurationController configurationController, IEmailController emailController, IEventLevelController eventLevelController, IWorkflowController workflowController, IPrintEventController printEventController)
+        public EventHandler(
+            IConfigurationController configurationController, 
+            IEmailController emailController, 
+            IEventLevelController eventLevelController, 
+            IWorkflowController workflowController, 
+            IPrintEventController printEventController)
         {
             _configurationController = configurationController;
             _emailController = emailController;

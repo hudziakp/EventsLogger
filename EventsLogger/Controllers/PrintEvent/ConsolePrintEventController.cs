@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
+using EventsLogger.Controllers.EmailHandler;
 using EventsLogger.Models.Data;
 
 namespace EventsLogger.Controllers.PrintEvent
 {
     public class ConsolePrintEventController : PrintEventController
     {
-        public ConsolePrintEventController(IEventLevelController eventLevelController, IInputOutputController io): base(eventLevelController, io) {
+        public ConsolePrintEventController(IEventLevelController eventLevelController, IInputOutputController io) : base(eventLevelController, io)
+        {
         }
 
         protected override void PrintEvents(IEnumerable<PrintableEvent> events)

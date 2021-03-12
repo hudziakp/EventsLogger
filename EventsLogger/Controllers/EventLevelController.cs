@@ -9,6 +9,7 @@ namespace EventsLogger.Controllers
     public class EventLevelController : IEventLevelController
     {
         private readonly IInputOutputController _io;
+
         private EventLevel _logLevel;
         public EventLevelController(IInputOutputController io)
         {
@@ -45,8 +46,8 @@ namespace EventsLogger.Controllers
         public IEnumerable<PrintableEvent> GetEventsToBePrinted(IEnumerable<Event> events)
         {
             return from e in events
-                where ShouldEventBeDisplayed(e.Level)
-                select Prepare(e);
+                   where ShouldEventBeDisplayed(e.Level)
+                   select Prepare(e);
         }
 
         private static PrintableEvent Prepare(Event evnt)
